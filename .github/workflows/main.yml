@@ -51,5 +51,5 @@ jobs:
         run: |
           az containerapp update \
             --name textclf-ui \
-            --resource-group ${{ env.RG }} \
-            --image ${{ env.UI_IMAGE }}
+            --resource-group rg-textclf \
+            --image fabiencappelli/projet7streamlit:latest
