@@ -28,7 +28,7 @@ if st.button("Envoyer la requête"):
 
     # Appel de l'API
     try:
-        response = requests.post(f"{API_URL}{"/predict"}", json=payload)
+        response = requests.post(API_URL + "/predict", json=payload)
         response.raise_for_status()
         results = response.json()
     except requests.exceptions.RequestException as e:
