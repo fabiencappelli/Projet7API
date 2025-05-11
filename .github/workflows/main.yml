@@ -46,14 +46,10 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+    
       - name: Deploy UI to ACA
         run: |
           az containerapp update \
             --name textclf-ui \
-            --resource-group rg-textclf \
-            --image fabiencappelli/projet7streamlit:latest \
-            --env-vars API_URL="https://$(az containerapp show \
-               --name textclf-api \
-               --resource-group rg-textclf \
-               --query properties.configuration.ingress.fqdn -o tsv)"
+            --resource-group ${{ env.RG }} \
+            --image ${{ env.UI_IMAGE }}
