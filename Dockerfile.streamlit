@@ -1,0 +1,13 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY streamlit_app.py requirements-streamlit.txt ./
+
+RUN pip install --no-cache-dir -r requirements-streamlit.txt
+
+EXPOSE 8501
+
+ENV API_URL="http://api:8000"
+
+CMD ["streamlit", "run", "streamlit_app.py", "--server.address=0.0.0.0", "--server.port=8501"]

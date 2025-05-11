@@ -5,8 +5,9 @@ import streamlit as st
 import requests
 import json
 import matplotlib.pyplot as plt
+import os
 
-API_URL = "http://localhost:8001"
+API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 st.set_page_config(page_title="Text Classification Tester", layout="wide")
 
