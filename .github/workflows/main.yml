@@ -1,0 +1,59 @@
+# .github/workflows/ci-cd.yml
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1) Build & push sur Docker Hub
+      - name: Build API image
+        run: docker build -f Dockerfile.api -t fabiencappelli/projet7api:latest .
+      - name: DockerHub login
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u fabiencappelli --password-stdin
+      - run: docker push fabiencappelli/projet7api:latest
+
+      # 2) Azure login
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 3) Update Container App
+      - name: Deploy API to ACA
+        run: |
+          az containerapp update \
+            --name textclf-api \
+            --resource-group rg-textclf \
+            --image fabiencappelli/projet7api:latest
+
+  build-and-deploy-ui:
+    needs: build-and-deploy-api
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build UI image
+        run: docker build -f Dockerfile.streamlit -t fabiencappelli/projet7streamlit:latest .
+      - name: DockerHub login
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u fabiencappelli --password-stdin
+      - run: docker push fabiencappelli/projet7streamlit:latest
+
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy UI to ACA
+        run: |
+          az containerapp update \
+            --name textclf-ui \
+            --resource-group rg-textclf \
+            --image fabiencappelli/projet7streamlit:latest \
+            --env-vars API_URL="https://$(az containerapp show \
+               --name textclf-api \
+               --resource-group rg-textclf \
+               --query properties.configuration.ingress.fqdn -o tsv)"
