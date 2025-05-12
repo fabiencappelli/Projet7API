@@ -10,7 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+        with:
+              lfs: true
+              fetch-depth: 0
       # 1) Build & push sur Docker Hub
       - name: Build API image
         run: docker build -f Dockerfile.api -t fabiencappelli/projet7api:latest .
