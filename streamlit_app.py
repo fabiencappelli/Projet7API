@@ -6,14 +6,17 @@ import requests
 import json
 import matplotlib.pyplot as plt
 import os
-from applicationinsights import TelemetryClient
+import logging
+from opencensus.ext.azure.log_exporter import AzureLogHandler
+from opencensus.ext.azure.log_exporter import AzureEventHandler
 
-# --- Application Insights TelemetryClient ---
 conn_str = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
-if conn_str:
-    tc = TelemetryClient(conn_str)
-else:
-    tc = None
+logger = logging.getLogger("textclf")
+logger.setLevel(logging.INFO)
+handler = AzureLogHandler(connection_string=conn_str)
+logger.addHandler(handler)
+event_handler = AzureEventHandler(connection_string=conn_str)
+logger.addHandler(event_handler)
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
@@ -54,15 +57,15 @@ if st.button("Envoyer la requête"):
                 st.success("Tweet positif")
 
             if st.button("⚠️ Mauvaise prédiction"):
-                if tc:
-                    tc.track_event(
-                        "misprediction",
-                        {
-                            "tweet_text": input_text,
-                            "predicted_label": results.get("prediction")
+                logger.info(
+                    "misprediction",
+                    extra={
+                        'custom_dimensions': {
+                            'tweet_text': input_text,
+                            'predicted_label': results.get("prediction")
                         }
-                    )
-                    tc.flush()
+                    }
+                )
                 st.info("Merci pour votre retour !")
 
         with col2:

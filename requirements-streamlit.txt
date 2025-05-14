@@ -1,4 +1,5 @@
 streamlit
 requests
 matplotlib
-applicationinsights
+opencensus-ext-azure
+opencensus-ext-logging
