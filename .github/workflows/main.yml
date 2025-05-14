@@ -54,6 +54,4 @@ jobs:
           az containerapp update \
             --name textclf-ui \
             --resource-group rg-textclf \
-            --image fabiencappelli/projet7streamlit:latest \
-            --secrets APPINSIGHTS_CONN="${{ secrets.APPINSIGHTS_CONN }}" \
-            --environment-variables APPLICATIONINSIGHTS_CONNECTION_STRING=APPINSIGHTS_CONN
+            --image fabiencappelli/projet7streamlit:latest
