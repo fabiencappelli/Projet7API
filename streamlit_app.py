@@ -57,15 +57,20 @@ if st.button("Envoyer la requête"):
                 st.success("Tweet positif")
 
             if st.button("Mauvaise prédiction"):
-                logger.info(
-                    "misprediction",
-                    extra={
-                        'custom_dimensions': {
-                            'tweet_text': input_text,
-                            'predicted_label': results.get("prediction")
-                        }
-                    }
-                )
+                with st.spinner("Envoi du log de misprédiction..."):
+                    try:
+                        logger.info(
+                            "misprediction",
+                            extra={
+                                'custom_dimensions': {
+                                    'tweet_text': input_text,
+                                    'predicted_label': results.get("prediction")
+                                }
+                            }
+                        )
+                        st.success("Log envoyé à Application Insights !")
+                    except Exception as e:
+                        st.error(f"Erreur lors de l'envoi du log : {e}")
                 st.info("Merci pour votre retour !")
 
         with col2:
