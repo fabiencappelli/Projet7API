@@ -7,16 +7,16 @@ import json
 import matplotlib.pyplot as plt
 import os
 import logging
-from opencensus.ext.azure.log_exporter import AzureLogHandler
-from opencensus.ext.azure.log_exporter import AzureEventHandler
+from azure.monitor.opentelemetry import configure_azure_monitor
 
-conn_str = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
-logger = logging.getLogger("textclf")
+env_conn_str = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
+configure_azure_monitor(
+    logger_name="mon_espace_logger",
+    connection_string=env_conn_str
+)
+
+logger = logging.getLogger("mon_espace_logger")
 logger.setLevel(logging.INFO)
-handler = AzureLogHandler(connection_string=conn_str)
-logger.addHandler(handler)
-event_handler = AzureEventHandler(connection_string=conn_str)
-logger.addHandler(event_handler)
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
@@ -56,7 +56,7 @@ if st.button("Envoyer la requête"):
             else:
                 st.success("Tweet positif")
 
-            if st.button("⚠️ Mauvaise prédiction"):
+            if st.button("Mauvaise prédiction"):
                 logger.info(
                     "misprediction",
                     extra={
