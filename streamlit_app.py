@@ -6,6 +6,14 @@ import requests
 import json
 import matplotlib.pyplot as plt
 import os
+from applicationinsights import TelemetryClient
+
+# --- Application Insights TelemetryClient ---
+conn_str = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
+if conn_str:
+    tc = TelemetryClient(conn_str)
+else:
+    tc = None
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
@@ -44,6 +52,18 @@ if st.button("Envoyer la requête"):
                 st.error("Tweet négatif")
             else:
                 st.success("Tweet positif")
+
+            if st.button("⚠️ Mauvaise prédiction"):
+                if tc:
+                    tc.track_event(
+                        "misprediction",
+                        {
+                            "tweet_text": input_text,
+                            "predicted_label": results.get("prediction")
+                        }
+                    )
+                    tc.flush()
+                st.info("Merci pour votre retour !")
 
         with col2:
             st.subheader("Répartition des probabilités")
