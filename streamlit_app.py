@@ -13,17 +13,13 @@ for part in conn_str.split(';'):
         break
 if not instr_key:
     raise RuntimeError("APPLICATIONINSIGHTS_CONNECTION_STRING invalide ou manquante.")
-'''
-La chaîne de connexion en entier pose en fait des problèmes de connexion
-'''
+# La chaîne de connexion en entier pose en fait des problèmes de connexion
 
 # Initialisation du client Application Insights
 tc = TelemetryClient(instr_key)
 # Envoi d'un événement de démarrage
-'''
-J'ai dû mettre ce test en place car malgré une connexion qui ne devait avoir aucun souci je n'arrivais pas à envoyer mes alertes
-de mauvaise prédiction. Je voulais donc voir si j'arrivais à communiquer avec Azure Insights en dehors de mon bouton
-'''
+# J'ai dû mettre ce test en place car malgré une connexion qui ne devait avoir aucun souci je n'arrivais pas à envoyer mes alertes de mauvaise prédiction. Je voulais donc voir si j'arrivais à communiquer avec Azure Insights en dehors de mon bouton
+
 tc.track_event('startup_test', {'stage': 'startup'})
 tc.flush()
 
@@ -35,9 +31,8 @@ st.markdown("---")
 st.write("Entrez votre tweet ci-dessous (en anglais !)")
 
 # Initialisation de l'état pour garder les résultats
-'''
-Cette structure avec l'état pour garder les résultats a été indispensable pour pouvoir communiquer les mispredictions
-'''
+#Cette structure avec l'état pour garder les résultats a été indispensable pour pouvoir communiquer les mispredictions
+
 
 if 'results' not in st.session_state:
     st.session_state['results'] = None
