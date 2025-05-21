@@ -70,7 +70,7 @@ Vous pouvez consulter [l'API en ligne](https://projet7oc.fabiencappelli.com/).
 
 ```bash
 git clone https://github.com/fabiencappelli/Projet7API.git
-cd text-classifier-app
+cd Projet7API
 ```
 
 ### Lancement en local (sans Docker)
@@ -145,15 +145,15 @@ curl -X POST http://localhost:8000/predict \
 
 ```
 .
-├── app.py                  # Backend FastAPI (API ML)
-├── streamlit_app.py        # Frontend Streamlit
-├── requirements-api.txt    # Dépendances pour l’API
-├── requirements-streamlit.txt # Dépendances pour Streamlit
-├── requirements.txt        # Dépendances complètes (all-in-one)
-├── docker-compose.yml      # Orchestration des services
-├── Dockerfile.api          # Dockerfile pour l’API (non affiché ici)
-├── Dockerfile.streamlit    # Dockerfile pour Streamlit (non affiché ici)
-└── deployed_model/         # Dossier attendu pour le modèle DistilBERT
+├── app.py                      # Backend FastAPI (API ML)
+├── streamlit_app.py            # Frontend Streamlit
+├── requirements-api.txt        # Dépendances pour l’API
+├── requirements-streamlit.txt  # Dépendances pour Streamlit
+├── requirements.txt            # Dépendances complètes (all-in-one)
+├── docker-compose.yml          # Orchestration des services
+├── Dockerfile.api              # Dockerfile pour l’API (non affiché ici)
+├── Dockerfile.streamlit        # Dockerfile pour Streamlit (non affiché ici)
+└── deployed_model/             # Dossier attendu pour le modèle DistilBERT
 ```
 
 ---
