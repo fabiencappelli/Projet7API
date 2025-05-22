@@ -41,18 +41,6 @@ Vous pouvez consulter [l'API en ligne](https://projet7oc.fabiencappelli.com/).
 
 ## Architecture
 
-```
-┌─────────────┐     POST /predict     ┌──────────────┐
-│ Utilisateur │ <───────────────────> │ Streamlit UI │
-└─────────────┘                       └──────────────┘
-                                              │
-                                      HTTP    │
-                                              ▼
-                               ┌──────────────────┐
-                               │ FastAPI Backend  │
-                               └──────────────────┘
-```
-
 - **API** : expose `/predict`, accepte un texte et retourne la prédiction + probabilités.
 - **Streamlit** : envoie le texte, affiche le résultat, log les misprédictions.
 
